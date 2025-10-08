@@ -1,0 +1,23 @@
+name: ensure-repo-env-app-registration
+run-name: ${{ github.event.action }}:${{ github.event.client_payload.dispatch_job_id }}
+
+on:
+  repository_dispatch:
+    types: [ensure-repo-env-app-registration]
+
+jobs:
+  perform-service-operation:
+    runs-on: windows-latest
+    environment: ${{ github.event.client_payload.repo_environment }}
+
+    steps:
+    - name: "OnfusionCoE: ensure-repo-env-app-registration Dispatch"
+      uses: fusioncoe/onfusioncoe-actions-g2/ensure-repo-env-app-registration@v0
+      with:
+        client_id: ${{ vars.ONFUSIONCOE_CICD_SP_APPLICATION_ID }}
+        client_secret: ${{ secrets.ONFUSIONCOE_CICD_SP_SECRET }}
+        tenant_id: ${{ vars.ONFUSIONCOE_CICD_SP_TENANT_ID }}
+        authority: ${{ vars.ONFUSIONCOE_CICD_SP_AUTHORITY }}        
+        cloud: ${{ vars.ONFUSIONCOE_CICD_SP_CLOUD }}
+        event_path: ${{ github.event_path }}
+        output_private_key: ${{ secrets.ONFUSIONCOE_CICD_SP_PRIVATE_KEY }}   
